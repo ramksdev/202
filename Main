@@ -1,1 +1,286 @@
 
+Abstract Data Types:
+
+Primitive Data Types:
+=====================
+int, double, boolean, char. 
+
+Class Data Types:
+====================
+Fruit, Car, Television, Album 
+(They represent real-world things that are tangible in nature)
+
+Abstract Data Types:
+====================
+'Abstract'means something that isn't tangible or concrete - it only exists as an idea. 
+For instance, religion, justice, etc. 
+Abstract Data Types are defined by how they work, rather than how they are defined. 
+
+Formal definition: An Abstract Data Type is an entity that is defined by how it functions
+and not by how it is implemented or constructed. 
+
+
+Interfaces 
+====================
+- Interfaces are a set of requirements for a class to implement. These requirements are listed or represented as method headings). The Interface will include a set of method headers that a class must provide an implementation for.
+- An interface will not have constructors or instance variables 
+- The headers will consist of an access modifier, a return type, the name of the method, and any parameters.  
+- A class that chooses to 'implement' an interface must implement all method headings listed in the interface. 
+- The idea of an interface is analogous to a contract in law, where two or more parties agree to be part of an agreement that must be followed. 
+- In the same way, a class is a blueprint for an object, and an interface is a blueprint for a class. 
+- There are now 3 levels: An interface, a class, and an object. 
+- Class that chooses to implement an interface will use the keyword 'implements', E.g, 'ArrayBasedStack implements StackInterface' 
+ 
+
+
+Stack ADT
+====================
+
+- Items are added to the top of the stack, and items are removed from the top of the stack 
+  such that the last item added to the stack will be the first item removed from the stack 
+- The Stack ADT is LIFO: Last In First Out 
+- Stack ADTs usually have the following: Push, Pop, and Peek.
+
+
+
+====================================================================================================================================
+ ==>> ArrayBasedStack.java <<== 
+
+public class ArrayBasedStack<T> extends Object implements StackInterface<T> {
+	//instance variables 
+	private int top; 
+	private  T[] stack; //we could have said 'Object stack' here but that would allow for different data-types to enter the stack. So, instead.. we choose 'T'  
+	
+	public ArrayBasedStack() {
+		super(); 
+		top = -1; 
+		stack = (T[])new Object[100]; //again, if we just just did Object[100] - we could have multiple object types within our stack - so we type-cast it to the T we want. 
+	}
+	
+	public ArrayBasedStack(int sizeOfStack) {
+		super(); //still making call to super() <- must come first 
+		top = -1; //top is still given default value 
+		//checking for valid sizeOfStack 
+		if(sizeOfStack > 0) {
+			stack = (T[])new Object[sizeOfStack];
+		}
+		else {
+			stack = (T[])new Object[100];
+		}
+	}
+	
+	public void push(T item) throws StackFullException {
+		/*
+		 *pushing implies we should check if the stack is full (it being empty / not full are both positive cases)
+		 *we know that the total number of indices contained within an array of size X should be X-1. (0 through X-1) (Eg. Array length 10 should have 0-9 indices).
+		 *So, if the length is 10 and the highest index is 9, we are in bounds for an array of length 10. But, if the index reference touches 10, then it's OOB. 
+		 *The array should thus be considered 'full' if the top index (which keeps track of where to populate) is equal to the last index in an array of length X, which would be X-1. 
+		*/
+		if(top == stack.length-1) { 
+			throw new StackFullException("Stack is full"); 
+		} 
+		else {
+			//move top up by one so that it can be positioned at a vacant space 
+			//then within that vacant space, store 'item' that was passed in by user 
+			top++; 
+			stack[top] = item; 
+		}	
+	}
+	
+	public void pop() throws StackEmptyException {
+		//Cannot pop from an empty stack - so, we will say if top == -1, then throw exception; else, go through removing process. 
+		//CSC223 has it such that if top >= 0 then it's safe to remove; otherwise throw exception. 
+		if(top == -1) {
+			throw new StackEmptyException("Stack is Empty"); 
+		} 
+		else {
+			stack[top] = null; 
+			top--; 
+		}
+	}
+	
+	public T peek() throws StackEmptyException {
+		//recall, this is condition for 'empty'... so if it's empty, through exception, else return stack[top]... with that said
+		//CSC223 has this as if(top >= 0) then return stack[top], else throw exception. 
+		if(top == -1) {
+			throw new StackEmptyException(); 
+		}
+		return stack[top]; 		
+	}
+	
+	
+	//this is just for demonstration but we can have isEmpty isFull methods -> this method can replace condition in push
+	public boolean isFull() {
+		return(top == stack.length-1); 
+	}
+	
+	//this is just for demonstration, but we can have isEmpty method -> this method can replace condition in pop
+	public boolean isEmpty() {
+		return(top == -1); 
+	}
+	
+	public void print() { 
+		int elements = top+1; 
+		for(int i = 0; i < elements; i++) {
+			System.out.println(stack[i]); 
+		}
+	}
+	
+	/*
+	 * Alternate version of pop()
+	 * 
+	 * public void pop() throws StackEmptyException {
+	 *    if(top >= 0) {
+	 * 	    stack[top] = null; 
+	 * 	    top--;
+	 *    else {
+	 * 	     throw new StackEmptyException("Pop attempted on an empty stack!"); 
+	 * 	  }
+	 *   }
+	 * }
+	 */
+	
+	/*
+	 * Alternate version of push()
+	 * 
+	 * public void push(T item) throws StackFullException {
+	 * 
+	 * 		if(top < stack.length - 1) {
+	 * 			top++; 
+	 * 			stack[top] = item; 
+	 * 		}
+	 * 		else {
+	 * 			throw new StackFullException("Push attempted on a full stack"); 
+	 * 		}
+	 * }
+	 */
+	
+	
+	/*
+	 * Alternate version of peek() 
+	 * 
+	 * public T peek(T item) throws StackEmptyException {
+	 * 		 
+	 * 		T value = null; 
+	 * 			
+	 * 		if(top >= 0) {
+	 * 			
+	 * 			value = stack[top]; 
+	 * 			
+	 * 		}
+	 * 		else {
+	 * 			throw new StackEmptyException();
+	 * 		}
+	 * 		return value; 
+	 * }
+	 */
+}
+
+
+==>> StackInterface.java <<==
+package Stack;
+
+public interface StackInterface<T> {
+
+	//if the stack is full, this method will throw 'StackFullException'; otherwise, it places the item it receives on-top of the stack. 
+	public void push(T item) throws StackFullException;  
+	
+	//if the stack is empty, this method will throw 'StackEmptyException'; otherwise it will remove an item from the top of the stack 
+	public void pop() throws StackEmptyException; 
+	
+	//if the stack is empty, this method will throw 'StackEmptyException'; otherwise, it will return the item on the top of the stack. 
+	public T peek() throws StackEmptyException; 
+	
+}
+
+StackFullException.java
+
+/*
+ * Classes that are built around 'Exceptions' extend (inherit) from the 'Exception class'
+ * Typically, Exception classes do not have any instance variables. 
+ * They typically have two constructors - one that accommodates a message, and one that doesn't. 
+ * Both constructors will make a call the the parent's constructor which is 'Exception'. 
+ */
+
+
+  =>> StackFullException.java <<=
+  
+public class StackFullException extends Exception { //must extend 'Exception' 
+	
+	//no instance variables 
+	public StackFullException() {
+		super(); //call to the Exception class constructor - as such, the class does not have instance variables  
+	}
+	
+	//overloaded constructor 
+	public StackFullException(String message) {
+		super(message); //call to overloaded Exception class that accepts 'message'...  
+	}
+	
+	//has no non-static methods 
+
+}
+
+
+  =>> StackEmptyException.java <<=
+
+/*
+ * Classes that are built around 'Exceptions' extend (inherit) from the 'Exception class'
+ * Typically, Exception classes do not have any instance variables. 
+ * They typically have two constructors - one that accommodates a message, and one that doesn't. 
+ * Both constructors will make a call the the parent's constructor which is 'Exception'. 
+ */
+
+
+public class StackEmptyException extends Exception {
+	
+	public StackEmptyException() {
+		super(); 
+	}
+	
+	public StackEmptyException(String message) {
+		super(message); 
+	}
+	
+}
+
+==>> StackDemo.java <<== 
+
+public class StackDemo {
+
+	public static void main(String[] args) {
+		ArrayBasedStack<String> stack = new ArrayBasedStack<>(3);
+
+		try {
+			stack.push("Dexter");
+			stack.push("Better Call Saul");
+			stack.push("Game of Thrones");
+			stack.push("House of Cards"); // this will not get added to the stack but the program will still continue
+		
+			System.out.println("Top of stack: " + stack.peek());
+			System.out.println("Now popping..");
+			stack.pop();
+
+			System.out.println("Top of stack: " + stack.peek());
+			System.out.println("Now popping..");
+			stack.pop();
+
+			System.out.println("Top of stack: " + stack.peek());
+			System.out.println("Now popping..");
+			stack.pop();
+
+		}
+		catch(StackFullException e1) {
+			System.out.println(e1.getMessage()); 
+		}
+		catch(StackEmptyException e2) {
+			System.out.println(e2.getMessage());
+		}
+
+	}
+}
+====================================================================================================================================
+
+
+
+
