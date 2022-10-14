@@ -31,20 +31,71 @@ Interfaces
 - There are now 3 levels: An interface, a class, and an object. 
 - Class that chooses to implement an interface will use the keyword 'implements', E.g, 'ArrayBasedStack implements StackInterface' 
  
+Exception Handling
+==========================================================================================================
+- An exception is an occurance of an unusual event. 
+- The exceptions are represented as special objects that inherit from the in-built 'Exception' class. 
+- Exceptions do not have instance variables or methods - they merely have 1-2 constructors 
+- The first constructor is a non-parameter constructor that makes a call to super()
+- The second constructor is a paramter-based constructor that recieves a 'String message' variable 
+  and the call to super() accepts message by super(message) 
+- We may 'throw' and 'catch' exceptions - where 'throwing' an exception creates an object of the Exception
+  class, and 'catching' the exception is handling the exceptional case.
+- Exceptions don't have instance variables because we know what is happening when the throwing an exception
+  and there is no need to store additional information. 
+  
+ ==>> Example of Exception:<<==
+
+public class StackFullException extends Exception { //must extend 'Exception' 
+	
+	//no instance variables 
+	public StackFullException() {
+		super(); //call to the Exception class constructor - as such, the class does not have instance variables  
+	}
+	
+	//overloaded constructor 
+	public StackFullException(String message) {
+		super(message); //call to overloaded Exception class that accepts 'message'...  
+	}
+	
+	//has no non-static methods 
+}
+
+==>> Example of Method that throws an Exception <<==
+
+//Methods that 'may' throw an exception will have 'throws ExceptionName' 
+//Within the body, 'throw new ExceptionName(MessageOfChoice) 
+
+public void pop() throws StackEmptyException { 
+		if(top == -1) {
+			throw new StackEmptyException("Stack is Empty"); 
+		} 
+		else {
+			stack[top] = null; 
+			top--; 
+		}
+}
+
+==========================================================================================================
+
+
+  
+Heirarchy of Exceptions 
+=========================
+Since an Exception is a child of Throwable, and since our Exceptions inherit from Exception, we can throw our Exceptions. 
+[Object] -> [Throwable] -> [Exception] -> Any Exception you might create (StackEmptyException/StackFullException)
+
+
 
 
 Stack ADT
-====================
+====================================================================================================================================
+ ==>> ArrayBasedStack.java <<== 
 
 - Items are added to the top of the stack, and items are removed from the top of the stack 
   such that the last item added to the stack will be the first item removed from the stack 
 - The Stack ADT is LIFO: Last In First Out 
 - Stack ADTs usually have the following: Push, Pop, and Peek.
-
-
-
-====================================================================================================================================
- ==>> ArrayBasedStack.java <<== 
 
 public class ArrayBasedStack<T> extends Object implements StackInterface<T> {
 	//instance variables 
@@ -281,6 +332,8 @@ public class StackDemo {
 }
 ====================================================================================================================================
 
+
+Lecture 12:
 
 
 
