@@ -397,7 +397,7 @@ Dynamic Allocation of Memory:
 
 }
 
-==>> NodeDemo <<== 
+==>> NodeDemo 1 <<== 
 
 public class NodeDemo {
 
@@ -414,6 +414,33 @@ public class NodeDemo {
 
         //prints 1984
         System.out.println(firstNode.getLink().getData());
+    }
+}
+
+==> NodeDemo 2 <==
+public class NodeDemo {
+
+    public static void main(String[] args) {
+
+        //firstNode & secondNode are references to a Node object
+        // firstNode -> [data: Dune | link: secondNode]
+        //secondNode -> [data: X | link: null]
+
+        Node<String> firstNode = new Node<String>("Dune");
+        Node<String> secondNode = new Node<String>("1984");
+        Node<String> thirdNode = new Node<>("Animal Farm");
+        firstNode.setLink(secondNode);
+        secondNode.setLink(thirdNode);
+
+        //Activity: Loop through all items and print content. 
+
+        Node<String> current = firstNode;
+
+        while(current != null) {
+            System.out.println(current.getData());
+            current = current.getLink();
+
+        }
     }
 }
 ==========================================================================================================
