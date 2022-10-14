@@ -43,6 +43,9 @@ Exception Handling
   class, and 'catching' the exception is handling the exceptional case.
 - Exceptions don't have instance variables because we know what is happening when the throwing an exception
   and there is no need to store additional information. 
+- Creating an exception will create a new Exception object that is polymorphic. 
+- For instance, a StackFullException will be of type Object, Throwable, Exception, and
+  itself - StackFullException. 
   
  ==>> Example of Exception:<<==
 
@@ -295,8 +298,10 @@ public class StackEmptyException extends Exception {
 	
 }
 
-==>> StackDemo.java <<== 
-
+==>> StackDemo.java Version 1 <<== 
+//When we run into StackFullException, we will not execute any code afterwards and executation will halt.
+//If we want the code to run, we must surround code that might breed specific exceptions in their own 
+//try catch. 
 public class StackDemo {
 
 	public static void main(String[] args) {
@@ -333,7 +338,87 @@ public class StackDemo {
 ====================================================================================================================================
 
 
-Lecture 12:
+Lecture 14:
+
+Static Allocation of Memory:
+============================
+- Limitation of using an array-based stack implementation is that the implementation uses 
+ 'Static Memory Allocation', in that once the size of the array is declared (by either the program or
+  the user) then it cannot be increased in the event the stack is full. We throw an exception; however, 
+  we cannot accomodate more items. 
+ - We should not choose to store 1000 or 10mil for our size because then we are consuming memory 
+   that might not be used. 
+ - Static Allocation of Memory involes or happens when the amount of memory that is reserved for use does not
+   change as the program executes. The amount of memory that is reserved is either determined when the
+   program is written when the memory is allocated, but does not change from that point forward. 
+
+Dynamic Allocation of Memory:
+============================
+- Dynamic Allocation of Memory involves or happens when the amount of memory that is reserved for changes
+  as the program executes. 
+- The amount of memory that is allocation can increase or decrease as needed by the program. 
+- Dynamic Allocation of Memory is facilated by an Object called a 'Node' which has comprises of 
+  a piece of data and a reference to the next Node. So, as such, you can always increase the size by 
+  adding and chaining Nodes. 
+  
+ >>> The Node Class <<<
+==========================================================================================================
+ 
+ public class Node<T> {
+
+    //instance variables
+    private T data;
+    private Node<T> link; //reference to an object of the Node<T> class
+
+    //constructor that receives data
+    //the data passed in will refer to the global data field
+    //Every node created floats in memory at first, and link is not referring to anything.
+    public Node(T data) {
+        this.data = data;
+        link = null;
+    }
+
+    //non-static methods
+    public void setData(T data) {
+        this.data = data;
+    }
+
+    public T getData() {
+        return data;
+    }
+
+    public void setLink(Node<T> otherNode) {
+        this.link = otherNode;
+    }
+
+    public Node<T> getLink() {
+        return link;
+    }
+
+}
+
+==>> NodeDemo <<== 
+
+public class NodeDemo {
+
+    public static void main(String[] args) {
+
+        //firstNode & secondNode are references to a Node object
+        // firstNode -> [data: Dune | link: secondNode]
+        //secondNode -> [data: X | link: null]
+
+        Node<String> firstNode = new Node<String>("Dune");
+        Node<String> secondNode = new Node<String>("1984");
+
+        firstNode.setLink(secondNode);
+
+        //prints 1984
+        System.out.println(firstNode.getLink().getData());
+    }
+}
+==========================================================================================================
+
+
 
 
 
