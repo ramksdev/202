@@ -445,6 +445,192 @@ public class NodeDemo {
 }
 ==========================================================================================================
 
+Stack Implemented with Nodes:
+/*
+ * The Stack with Links - adding a new item goes above item 1 and top moves up
+ * 
+ * 	    [top] ===>   	[ item 1 ]
+ * 				   ||	
+ * 				   ||		
+ * 				   \/
+ * 				[ item2 ]
+ * 
+ * 				   ||	
+ * 				   ||		
+ * 				   \/
+ * 				[ item 3]
+ * 				   ||
+ * 				   ||
+ * 				   \/
+ * 				
+ */	
+
+>> NodeBasedStack.java << 
+public class NodeBasedStack<T> implements UnboundedStackInterface<T> {
+
+	private Node<T> top;
+
+	public NodeBasedStack() {
+		top = null;
+	}
+
+	@Override
+	public void pop(T item) throws StackEmptyException {
+
+		if (top == null) {
+			throw new StackEmptyException("Stack is empty");
+		} else {
+			top = top.getLink();
+		}
+	}
+
+	@Override
+	public String peek() {
+		if (top == null) {
+			return "Stack is Empty";
+		} else {
+			return top.getData().toString();
+		}
+	}
+
+	@Override
+	public void push(T item) {
+		Node<T> currentNode = new Node<T>(item);
+
+		if (top == null) {
+			top = currentNode;
+		} 
+		else {
+			currentNode.setLink(top);
+			top = currentNode;
+		}
+	}
+
+	public void print() {
+		Node<T> current = top;
+
+		while (current != null) {
+			System.out.println(current.getData());
+
+			current = current.getLink();
+		}
+	}
+
+}
+
+>> StackInterface.java << 
+
+public interface StackInterface<T> {
+	
+	public void push(T item) throws StackFullException; 
+	
+	public void pop(T item) throws StackEmptyException;
+	
+	public String peek(); 
+
+}
+
+>> UnboundedStackInterface <<
+
+public interface UnboundedStackInterface<T> extends StackInterface<T> {
+	
+	
+	/*
+	 * Since UnboundedStackInterface extends StackInterface; all of the 
+	 * method headers defined StackInterface are available and known to know
+	 * UnboundedStackInterface. We don't need to rewrite the method headers
+	 * that we want within UnboundedStack that are within StackInterface, 
+	 * but we may Override a header we want to change. 
+	 * For instance, StackInterface has a 'push' method that throws 
+	 * a StackFullException. Our unbounded stack can never be full so we
+	 * want to have a 'push' header in our UnboundedStackInterface that
+	 * does not throw this exception. 
+	 */
+	
+	public void push(T item); 
+
+}
+
+>> Node.java <<
+
+public class Node<T> {
+	
+	//instance variables
+    private T data;
+    private Node<T> link; //reference to an object of the Node<T> class
+
+    //constructor that receives data
+    //the data passed in will refer to the global data field
+    //Every node created floats in memory at first, and link is not referring to anything.
+    public Node(T data) {
+        this.data = data;
+        link = null;
+    }
+
+    //non-static methods
+    public void setData(T data) {
+        this.data = data;
+    }
+
+    public T getData() {
+        return data;
+    }
+
+    public void setLink(Node<T> otherNode) {
+        this.link = otherNode;
+    }
+
+    public Node<T> getLink() {
+        return link;
+    }
+
+}
+
+>> StackEmptyException << 
+public class StackEmptyException extends Exception {
+
+	public StackEmptyException() {
+		super(); 
+	}
+	
+	public StackEmptyException(String message) {
+		super(message); 
+	}
+	
+}
+
+>> StackFullException <<
+public class StackFullException extends Exception {
+
+		public StackFullException() {
+			super(); 
+		}
+		
+		public StackFullException(String message) {
+			super(message); 
+		}
+}
+
+>> UnboundedStack.java <<
+public class UnboundedStackDemo {
+	
+	public static void main(String[] args) {
+		
+		NodeBasedStack<String> stack = new NodeBasedStack<String>();
+		stack.push("Jacob");
+		stack.push("Tony");
+		stack.push("Matthew");
+		
+		System.out.println(stack.peek());
+		
+		
+	}
+}
+
+
+
+
+
 
 
 
