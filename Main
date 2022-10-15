@@ -32,6 +32,8 @@ Interfaces
 - In the same way, a class is a blueprint for an object, and an interface is a blueprint for a class. 
 - There are now 3 levels: An interface, a class, and an object. 
 - Class that chooses to implement an interface will use the keyword 'implements', E.g, 'ArrayBasedStack implements StackInterface' 
+
+========================================================================================================================================================
  
 Exception Handling
 ========================================================================================================================================================
