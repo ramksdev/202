@@ -358,6 +358,8 @@ Static Allocation of Memory:
  - Static Allocation of Memory involes or happens when the amount of memory that is reserved for use does not
    change as the program executes. The amount of memory that is reserved is either determined when the
    program is written when the memory is allocated, but does not change from that point forward. 
+ - Dynamic Memory Allocation: [the process of assigning the memory space during the execution time or the run time] 
+ - Static Memory Allocation: [memory is allocated for declared variables by the compiler]
 
 Dynamic Allocation of Memory:
 ========================================================================================================================================================
