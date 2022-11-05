@@ -867,7 +867,13 @@ public class QueueDemo {
 
 }
 
+=======================================================================================================================================================
 
+LIST ADT
+- Unordered List 
+- 'add' an item can be virtually anywhere
+- 'remove' takes an existing item off the list
+- 'find' determines if an item is on the list 
 
 
 
