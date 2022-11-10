@@ -896,77 +896,6 @@ public class Node<T> extends Object {
 
 }
 
-
-package NodeBasedQueue;
-
-public class NodeBasedQueue<T> extends Object implements UnboundedQueueInterface<T>{
-
-	private Node<T> front; 
-	private Node<T> rear; 
-	//private int numberOfItems; 
-	
-	
-	public NodeBasedQueue() {
-		super(); 
-		front = null; 
-		rear = null; 
-		//this.numberOfItems = 0; 
-	}
-	
-	@Override
-	public T dequeue() throws QueueEmptyException {
-		if(isEmpty()) {
-			throw new QueueEmptyException("Dequeue attempted on empty queue"); 
-		}
-		else {
-			T frontItem = front.getData(); 
-			front = front.getLink(); 
-			//special case when we remove all items - front points to null but rear does? So update rear as well. 
-			if(front == null) {
-				rear = null; 
-			}
-			//numberOfItems--; 
-			return frontItem; 
-		}
-	}
-	
-	public boolean isEmpty() {
-		return(front == null && rear == null); 
-	}
-
-	@Override
-	public String look() {
-		String frontItem = ""; 
-		if(isEmpty()) {
-			frontItem = "Queue is Empty"; 
-		}
-		else {
-			frontItem = front.getData().toString(); 
-		}
-		return frontItem; 
-	}
-
-	@Override
-	public void enqueue(T item) {
-		
-		Node<T> currentNode = new Node<T>(item); 
-		
-		//can never be full
-		if(front == null && rear == null) {
-			front = currentNode; 
-			rear = currentNode; 
-			//numberOfItems++; 
-		}
-		else {
-			rear.setLink(currentNode);
-			rear = currentNode; 
-			//numberOfItems++; 
-		}
-		
-	}
-	
-}
-
 public class NodeBasedQueueDemo {
 	
 	public static void main(String[] args) {
@@ -1055,9 +984,72 @@ public interface UnboundedQueueInterface<T> extends QueueInterface<T>{
 
 }
 
+package NodeBasedQueue;
 
+public class NodeBasedQueue<T> extends Object implements UnboundedQueueInterface<T>{
 
+	private Node<T> front; 
+	private Node<T> rear; 
+	//private int numberOfItems; 
+	
+	
+	public NodeBasedQueue() {
+		super(); 
+		front = null; 
+		rear = null; 
+		//this.numberOfItems = 0; 
+	}
+	
+	@Override
+	public T dequeue() throws QueueEmptyException {
+		if(isEmpty()) {
+			throw new QueueEmptyException("Dequeue attempted on empty queue"); 
+		}
+		else {
+			T frontItem = front.getData(); 
+			front = front.getLink(); 
+			//special case when we remove all items - front points to null but rear does? So update rear as well. 
+			if(front == null) {
+				rear = null; 
+			}
+			//numberOfItems--; 
+			return frontItem; 
+		}
+	}
+	
+	public boolean isEmpty() {
+		return(front == null && rear == null); 
+	}
 
+	@Override
+	public String look() {
+		String frontItem = ""; 
+		if(isEmpty()) {
+			frontItem = "Queue is Empty"; 
+		}
+		else {
+			frontItem = front.getData().toString(); 
+		}
+		return frontItem; 
+	}
 
-
-
+	@Override
+	public void enqueue(T item) {
+		
+		Node<T> currentNode = new Node<T>(item); 
+		
+		//can never be full
+		if(front == null && rear == null) {
+			front = currentNode; 
+			rear = currentNode; 
+			//numberOfItems++; 
+		}
+		else {
+			rear.setLink(currentNode);
+			rear = currentNode; 
+			//numberOfItems++; 
+		}
+		
+	}
+	
+}
