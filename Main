@@ -1053,3 +1053,229 @@ public class NodeBasedQueueDemo {
 	}
 
 }
+
+=========================================================================================================================================================
+
+List:
+
+package ListProject;
+
+public interface ListInterface<T> {
+	
+	//adds item to list 
+	public void add(T item); 
+	
+	//if item exists, remove and return true; else do opposite. 
+	public boolean remove(T item); 
+	
+	public boolean find(T item);
+
+	
+}
+
+package ListProject;
+
+public class ArrayBasedList<T> implements ListInterface<T> {
+
+	private int numberOfItems;
+	private T[] list;
+
+	public ArrayBasedList() {
+		list = (T[]) new Object[5];
+		numberOfItems = 0;
+	}
+
+	public ArrayBasedList(int size) {
+		numberOfItems = 0;
+		if (size > 0) {
+			list = (T[]) new Object[size];
+		} else {
+			list = (T[]) new Object[5];
+		}
+	}
+
+	@Override
+	public void add(T item) {
+
+		if (numberOfItems < list.length) { // numberOfItems < list.length means list isn't full, equal case would go to
+											// else.
+			list[numberOfItems] = item;
+			numberOfItems++;
+		} else {
+			// This is the if we are full case. We create a list that is double the length,
+			// and then have new list be old list.
+			T[] largerList = (T[]) new Object[list.length * 2];
+			for (int i = 0; i < list.length; i++) {
+				largerList[i] = list[i];
+			}
+			// copy item intended into new list - remember, 'numberOfItems' serves as our
+			// index as well.
+			largerList[numberOfItems] = item;
+			numberOfItems++;
+			list = largerList; // update reference
+		}
+	}
+
+//	public boolean find(T item) {
+//		/*
+//		 * Using while loop - allows us to stop as soon as we hit a case where item is
+//		 * found. Only do index < numberOfItems and not index < list.length since we
+//		 * only want to check area that is filled.
+//		 */
+//		boolean found = false;
+//		int index = 0;
+//
+//		while (!found && index < numberOfItems) {
+//			if (list[index].equals(item)) {
+//				found = true;
+//			} else {
+//				index++;
+//			}
+//		}
+//		return found;
+//	}
+	
+	
+	public boolean find(T item) {
+		boolean found = false; 
+		int index = locate(item); 
+		if(index != -1) {
+			found = true; 
+		}
+		return found; 
+	}
+	
+	public String toString() {
+		String toReturn = ""; 
+		for(int i = 0; i < numberOfItems; i++) {
+			toReturn  = toReturn + list[i].toString() + "\n";
+		}
+		return toReturn; 
+	}
+
+//	public boolean remove(T item) {
+//		boolean found = find(item);
+//		boolean removed = false;
+//
+//		if (found == true) {
+//
+//			int index = 0;
+//
+//			while (removed == false && index < numberOfItems) {
+//				if (list[index].equals(item)) {
+//					list[index] = null;
+//					removed = true;
+//					numberOfItems--;
+//
+//					// now we're going to do something different here - list is [x][x][x][x] but
+//					// when we remove, like with [x][x][][x][x] well
+//					// since we don't care about order we can take last item and drop it into the
+//					// newly created vacant space
+//					list[index] = list[numberOfItems];
+//					list[numberOfItems] = null;
+//				} else {
+//					index++;
+//				}
+//			}
+//		}
+//
+//		return removed;
+//	}
+	
+	
+	public boolean remove(T item) {
+		int index = locate(item); 
+		boolean removed = false; 
+		if(index != -1) {
+			list[index] = null;
+			numberOfItems--;
+			list[index] = list[numberOfItems];
+			list[numberOfItems] = null;
+			removed = true;
+		}
+		return removed; 
+		
+	}
+	
+
+	// helper method - private. Is not a part of the interface, so private helper
+	// methods can be in class even if it isn't defined in interface
+	//this is an implemenative detail 
+	private int locate(T item) {
+		int index = 0;
+		boolean found = false;
+
+		while (!found && index < numberOfItems) {
+			if (list[index].equals(item)) {
+				found = true;
+			} else {
+				index++;
+			}
+		}
+
+		if(found == false) {
+			index = -1; 
+		}
+		
+		//otherwise index would be holding valid location since index never got a chance to update after initial find 
+		return index; 
+
+	}
+
+}
+
+
+package ListProject;
+
+import java.util.Scanner;
+
+public class ListDemo2 {
+	
+	public static void main(String[] args) {
+		Scanner keyboard = new Scanner(System.in);
+		
+		ListInterface<String> myList = new ArrayBasedList<String>(2); 
+		
+		int option; 
+		do {
+			System.out.println("Press 1 to add an item to the list"); 
+			System.out.println("Press 2 to remove an item from the list");
+			System.out.println("Press 3 to find an item from the list");
+			System.out.println("Press 4 to end the program"); 
+			option = keyboard.nextInt();
+			keyboard.nextLine(); 
+			
+			if(option == 1) {
+				System.out.println("Enter item"); 
+				String input = keyboard.nextLine();
+				myList.add(input); 
+			}
+			else if(option == 2) {
+				System.out.println("Enter item you would like to remove"); 
+				String input = keyboard.nextLine();
+				myList.remove(input); 
+			}
+			else if(option == 3) {
+				System.out.println("Enter item to remove");
+				String input = keyboard.nextLine();
+				if(!myList.find(input)) {
+					System.out.println("Item not found"); 
+				}
+				else {
+					System.out.println("Item was found!"); 
+				}
+			}
+			else if(option == 4) {
+				System.out.println("Thank you for using the program!"); 
+			}
+			else {
+				System.out.println("Please enter a valid option"); 
+			}
+			System.out.println("LIST NOW: "); 
+			System.out.println(myList.toString()); 
+		}while(option != 4);
+		
+	}
+
+}
+
