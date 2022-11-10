@@ -869,11 +869,192 @@ public class QueueDemo {
 
 =======================================================================================================================================================
 
-LIST ADT
-- Unordered List 
-- 'add' an item can be virtually anywhere
-- 'remove' takes an existing item off the list
-- 'find' determines if an item is on the list 
+Node.java
+
+public class Node<T> extends Object {
+	
+	private T data;
+	private Node<T> link; 
+	
+	public Node(T data) {
+		super(); 
+		this.data = data; 
+		this.link = null; 
+	}
+	
+	public void setLink(Node<T> otherNode) {
+		this.link = otherNode;
+	}
+	
+	public T getData() {
+		return this.data; 
+	}
+	
+	public Node<T> getLink() {
+		return link; 
+	}
+
+}
+
+
+package NodeBasedQueue;
+
+public class NodeBasedQueue<T> extends Object implements UnboundedQueueInterface<T>{
+
+	private Node<T> front; 
+	private Node<T> rear; 
+	//private int numberOfItems; 
+	
+	
+	public NodeBasedQueue() {
+		super(); 
+		front = null; 
+		rear = null; 
+		//this.numberOfItems = 0; 
+	}
+	
+	@Override
+	public T dequeue() throws QueueEmptyException {
+		if(isEmpty()) {
+			throw new QueueEmptyException("Dequeue attempted on empty queue"); 
+		}
+		else {
+			T frontItem = front.getData(); 
+			front = front.getLink(); 
+			//special case when we remove all items - front points to null but rear does? So update rear as well. 
+			if(front == null) {
+				rear = null; 
+			}
+			//numberOfItems--; 
+			return frontItem; 
+		}
+	}
+	
+	public boolean isEmpty() {
+		return(front == null && rear == null); 
+	}
+
+	@Override
+	public String look() {
+		String frontItem = ""; 
+		if(isEmpty()) {
+			frontItem = "Queue is Empty"; 
+		}
+		else {
+			frontItem = front.getData().toString(); 
+		}
+		return frontItem; 
+	}
+
+	@Override
+	public void enqueue(T item) {
+		
+		Node<T> currentNode = new Node<T>(item); 
+		
+		//can never be full
+		if(front == null && rear == null) {
+			front = currentNode; 
+			rear = currentNode; 
+			//numberOfItems++; 
+		}
+		else {
+			rear.setLink(currentNode);
+			rear = currentNode; 
+			//numberOfItems++; 
+		}
+		
+	}
+	
+}
+
+public class NodeBasedQueueDemo {
+	
+	public static void main(String[] args) {
+		NodeBasedQueue<String> waitList = new NodeBasedQueue<String>(); 
+		
+		System.out.println(waitList.look()); 
+		
+		waitList.enqueue("Jack");
+		waitList.enqueue("Jill");
+		waitList.enqueue("Joe");
+		
+		System.out.println(waitList.look()); 
+		
+		
+		try {
+			System.out.println("Removed from front: " + waitList.dequeue());
+			System.out.println(waitList.look()); 
+			System.out.println("Removed from front: " + waitList.dequeue());
+			System.out.println(waitList.look()); 
+			System.out.println("Removed from front: " + waitList.dequeue());
+			System.out.println(waitList.look()); 
+		} 
+		catch (QueueEmptyException e) {
+			System.out.println(e.getMessage()); 
+		} 
+		
+		System.out.println(waitList.look()); 
+
+	}
+
+}
+
+public class QueueEmptyException extends Exception {
+	
+	public QueueEmptyException() {
+		super(); 
+	}
+	
+	public QueueEmptyException(String message) {
+		super(message); 
+	}
+	
+}
+
+public class QueueFullException extends Exception {
+	
+	public QueueFullException() {
+		super(); 
+	}
+	
+	public QueueFullException(String message) {
+		super(message); 
+	}
+
+}
+
+public interface QueueInterface<T> {
+	
+	public void enqueue(T item) throws QueueFullException; 
+	
+	public T dequeue() throws QueueEmptyException; 
+	
+	public String look(); 
+
+}
+
+
+public interface UnboundedQueueInterface<T> extends QueueInterface<T>{
+
+	/*
+	 * These were in the QueueInterface 
+	 * 
+	 * 	public void enqueue(T item); 
+	 *
+	 *	public T dequeue() throws QueueEmptyException; 
+	 *
+	 *	public String look(); 
+	 * 
+	 * dequeue and look are available in the same way they are noted in QueueInterface, but since we have added an implementation for enqueue - 
+	 * it overrides the default implementation. Namely, in this case, enqueue 
+	 * 
+	 */
+	
+	
+	public void enqueue(T item); 
+
+}
+
 
 
 
