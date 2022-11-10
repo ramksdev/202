@@ -896,37 +896,6 @@ public class Node<T> extends Object {
 
 }
 
-public class NodeBasedQueueDemo {
-	
-	public static void main(String[] args) {
-		NodeBasedQueue<String> waitList = new NodeBasedQueue<String>(); 
-		
-		System.out.println(waitList.look()); 
-		
-		waitList.enqueue("Jack");
-		waitList.enqueue("Jill");
-		waitList.enqueue("Joe");
-		
-		System.out.println(waitList.look()); 
-		
-		
-		try {
-			System.out.println("Removed from front: " + waitList.dequeue());
-			System.out.println(waitList.look()); 
-			System.out.println("Removed from front: " + waitList.dequeue());
-			System.out.println(waitList.look()); 
-			System.out.println("Removed from front: " + waitList.dequeue());
-			System.out.println(waitList.look()); 
-		} 
-		catch (QueueEmptyException e) {
-			System.out.println(e.getMessage()); 
-		} 
-		
-		System.out.println(waitList.look()); 
-
-	}
-
-}
 
 public class QueueEmptyException extends Exception {
 	
@@ -1051,5 +1020,36 @@ public class NodeBasedQueue<T> extends Object implements UnboundedQueueInterface
 		}
 		
 	}
+}
+
+public class NodeBasedQueueDemo {
 	
+	public static void main(String[] args) {
+		NodeBasedQueue<String> waitList = new NodeBasedQueue<String>(); 
+		
+		System.out.println(waitList.look()); 
+		
+		waitList.enqueue("Jack");
+		waitList.enqueue("Jill");
+		waitList.enqueue("Joe");
+		
+		System.out.println(waitList.look()); 
+		
+		
+		try {
+			System.out.println("Removed from front: " + waitList.dequeue());
+			System.out.println(waitList.look()); 
+			System.out.println("Removed from front: " + waitList.dequeue());
+			System.out.println(waitList.look()); 
+			System.out.println("Removed from front: " + waitList.dequeue());
+			System.out.println(waitList.look()); 
+		} 
+		catch (QueueEmptyException e) {
+			System.out.println(e.getMessage()); 
+		} 
+		
+		System.out.println(waitList.look()); 
+
+	}
+
 }
