@@ -1597,3 +1597,9 @@ You can imagine that we do this for each node as we search for our element. For 
 avoid several comparsions by doing this. 
 
 So we HALF our input for every comparsion. There is a function in math that halves the input - it is a logorithim.
+
+So we know what the time complexity is in the worst case for linear data stuctures (O(N) since in the worst case N elements are subject to comparsion) 
+but what about the worst case for a BST?
+Well, it becomes Log(base2)(n) 
+So we know that for 16 elements, Log2(16) = 4. So there are only four comparsions for 16 elements. So for N elements there would be Log(N) comparsions
+in the worst case. But actually - since we ALSO compare the root, it will take Log(N) + 1 comparsions. 
