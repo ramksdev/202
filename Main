@@ -1589,5 +1589,11 @@ This is compared to randomly going through numbers which, in the worst case we'd
 time complexity is O(N) - which basically means at the worst case we'd have to search through all N elements, so O(N). 
 
 Efficency in regard to a BST:
+We have already established that it takes very few comparsions when searching for an element in a BST as compared to a linear data structure. 
+This is primarily because on the very first comparsion - depending on whether the root is greater than or less than the element we want to find - 
+we disregard half of the BST entirely (this is because items to the left of the root are less than the root, and items to the right are greater). 
+You can imagine that we do this for each node as we search for our element. For instance, the next element we check will be subject to our comparsion
+(where we will check if it is greater than or less than the node/item and we will move left/right accordingly) - hence, we disregard a subtree and 
+avoid several comparsions by doing this. 
 
-
+So we HALF our input for every comparsion. There is a function in math that halves the input - it is a logorithim.
