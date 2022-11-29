@@ -1279,3 +1279,163 @@ public class ListDemo2 {
 
 }
 =====================================================================================================================================================
+
+NodeBasedList:
+
+package NodeBasedList;
+
+public interface ListInterface<T> {
+	
+	public void add(T item); 
+	
+	public boolean remove(T item); 
+	
+	public boolean find(T item); 
+	
+	public String toString(); 
+
+}
+
+package NodeBasedList;
+
+public class NodeBasedList<T> extends Object implements ListInterface<T> {
+	
+	private Node list; //reference to node object 
+	
+	public NodeBasedList() {
+		super(); 
+		this.list = null; 
+	}
+
+	@Override
+	public void add(T item) {
+		Node<T> currentNode = new Node<>(item); 
+		if(list == null) {
+			list = currentNode; 
+		}
+		else {
+			//there is no order! no need to traverse and put element to head. Just do a prepend operation. 
+			currentNode.setLink(list);
+			list = currentNode; 
+		}
+		
+	}
+	
+	private Node<T> locate(T item) {
+		Node<T> toReturn = null; 
+		boolean found = false; 
+		Node<T> current = list; 
+		while(current != null) {
+			if(current.getData().equals(item)) {
+				toReturn = current; 
+				break; 
+			}
+			current = current.getLink(); 
+		}
+		return toReturn; 
+	}
+	
+	public boolean find(T item) {
+		boolean found = false; 
+		//since locate(T item) gives a Node, you cannot store it in a boolean value 
+		Node<T> current = locate(item); 
+		if(current != null) {
+			//we know it was found 
+			found = true; 
+			
+		}
+		return found; 
+	}
+	
+	
+	
+	public String toString() {
+		String toReturn = ""; 
+		Node<T> current = list; 
+		while(current != null) {
+			toReturn = toReturn + current.getData().toString() + "\n"; 
+			current = current.getLink(); 
+		}
+		return toReturn; 
+		
+	}
+
+	@Override
+	public boolean remove(T item) {
+		boolean verdict = false; 
+		while(list != null && list.getData().equals(item)) {
+			list = list.getLink(); 
+		}
+		
+		Node<T> prev = null; 
+		Node<T> current = list; 
+		
+		while(current != null) {
+			if(current.getData().equals(item)) {
+				prev.setLink(prev.getLink().getLink());
+			}
+			else {
+				prev = current; 
+			}
+			current = current.getLink(); 
+		}
+	
+		return verdict; 
+	}
+	
+	/*
+	 * Can create personal 'Node' class within NodeBasedList - this is called an 'inner class' 
+	 * which is completely contained inside NodeBasedList. 
+	 * For inner-classes, while you don't have access to T data and Node<T> link because they are private
+	 * you still have access to public methods (like setData and getData and setLink)
+	 */
+	
+	private class Node<T> {
+		//instance variables (same as before, T data, and Node link 
+		private T data; 
+		private Node<T> link; 
+		
+		public Node(T data) {
+			this.data = data; 
+			this.link = null; 
+		}
+		
+		//non-static methods 
+		public void setData(T data) {
+			this.data = data; 
+		}
+		
+		public T getData() {
+			return this.data; 
+		}
+		
+		public void setLink(Node<T> otherNode) {
+			this.link = otherNode; 
+		}
+		
+		public Node<T> getLink() {
+			return this.link; 
+		}
+		
+	}
+
+}
+
+package NodeBasedList;
+
+public class NodeBasedListDemo {
+	
+	public static void main(String[] args) {
+		NodeBasedList<String> favoriteBandList = new NodeBasedList<>(); 
+		favoriteBandList.add("Beatles");
+		favoriteBandList.add("Big Time Rush");
+		favoriteBandList.add("The Spice Girls");
+		
+		System.out.println(favoriteBandList.remove("The Spice Girls")); 
+		
+		System.out.println(favoriteBandList.toString()); 
+		
+	}
+
+}
+=====================================================================================================================================================
