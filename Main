@@ -1439,3 +1439,155 @@ public class NodeBasedListDemo {
 
 }
 ========================================================================================================================================================
+
+Recursion:
+- Iteration is repetition of some part of a program implemented by using loops (while, do/while, for-loop) 
+- The process in which a function calls itself directly or indirectly is called "recursion" and the corresponding function is called a recursive function.
+- a recursive function will call itself multiple times - each call simplifies the problem - until it eventually reaches a 'base case', where the 
+  recursive nature of the function terminates. 
+- The call stack is what a program uses to keep track of method calls. The call stack is made up of stack frames—one for each method call.
+- Each method is a method call. These method calls are placed on the callstack. 
+- Hence, recursion is underpinned by the STACK ADT. 
+  
+ 
+
+===>> EXAMPLE 1 <<=== 
+public class NodeBasedListDemo {
+	
+	public static void main(String[] args) {
+		countDown(3); 
+	}
+	
+	public static void countDown(int num) {
+		if(num > 0) {
+			System.out.println(num); 
+			countDown(num-1); 
+		}
+	}
+
+}
+
+/*
+Call one: 
+countDown(3)
+=> if(num > 0) TRUE 
+=> print num (3) 
+=> call countDown(int num) function on num-1 so countDown(num-1) = countDown(2) 
+
+
+Call two:
+=> if(num > 0) TRUE 
+=> print num (2) 
+=> call countDown(int num) function on num-1 so countDown(num-1) = countDown(1) 
+ 
+Call three:
+countDown(1)
+=> if(num > 0) TRUE 
+=> print num (1) 
+=> call countDown(int num) function on num-1 so countDown(num-1) = countDown(0)
+
+Call four:
+countDown(1)
+=> if(num > 0) FALSE 
+
+terminated 
+*/
+
+===>> EXAMPLE 2 <<===
+public class NodeBasedListDemo {
+	
+	public static void main(String[] args) {
+		
+		int result = factorial(4); 
+		System.out.println(result); 
+
+		
+	}
+	
+	/*
+	 * 
+	 * This is the pattern for finding X! - where is X is any positive number (including 0) 
+	 * 4! = 4 * 3 * 2 * 1
+	 * 
+	 * 3! = 3 * 2 * 1 
+	 * 
+	 * 2! = 2 * 1
+	 * 
+	 * 1! = 1 
+	 * 
+	 * 0! = 1 
+	 * 
+	 * We can therefore see that
+	 * 
+	 * 4! = 4 * 3! 
+	 * 3! = 3 * 2! 
+	 * 2! = 2 * 1! 
+	 * 1! = 1 
+	 * 0! = 1 
+	 * 
+	 * So, for any given accepted number in the function, we take that number and multiply it by 
+	 * the the factorial of the number-1. 
+	 * Specifically, it would be: num * factorial(num-1)
+	 * 
+	 * The base case is when the number equals 0 - and since 0! = 1, when the method eventually 
+	 * lowers 'num' to 0, we can return 1. 
+	 */
+	
+	
+	public static int factorial(int num) {
+		if(num == 0) {
+			return 1; 
+		}
+		return num * factorial(num-1); 
+	}
+
+}
+========================================================================================================================================================
+
+
+Tree Abstract Data Type (ADT):
+- A Tree is a nonlinear abstract data type. 
+- Linear Abstract data type is one where each item in the ADT has at most one item before it (predecessor) and one after is (successor) 
+- Stacks/Queues/Linked Lists/Lists are linear ADTS
+- Tree ADT each item will have at most one item before it (predecessor) but it can have more than one(successor) 
+- Every time an item is added to the tree ADT it is made a successor to one of the existing items in the tree except in the case of the first item 
+  which is referred to as the root of the tree. 
+- a Tree ADT has a 'root' and children (successor) 'branch off' from the 'root' 
+- Leaves are 'nodes' or successors to the root that do not have 'children' 
+
+Binary Trees 
+- Trees with a particular restriction: 
+- Each item can have at most two successors (children) - so, after you have two children (successors) to a root, children must be imposed on the
+  two successors of the root. 
+- Each child is a root of its own tree. 
+
+Binary Search Tree
+- Note: Binary Trees are different than Binary Search Trees
+- a Binary Search Tree is a tree that has at most two children/each node is a root of its own subtree.. AND all nodes to the RIGHT of the root are 
+  greater in value and all nodes to the left of the root are less than the root's value. 
+
+Determining where a value should go in a BST
+- Judge whether the value is > or < the root. If less, go left. If more, go right. Keep doing this process for each node until the one you want
+entered find its place 
+       
+      40 
+    13  45 
+   8 26 42 98
+             99
+
+Efficency of BST:
+For a list, you have to search EVERY item before finding the desired value. 
+But let's suppose we wanted to find '42' in the BST. Well, we'd merely go to 40 and ask: if 42 greater than 40 or less than? Obviously 42 is greater
+than 40, so we go to the right in search for higher values since in a BST all vaues to the right of the root are greater. Then, we encounter 45
+and make the same judgement. We move to the left of 45 since 42 is < 45 and we have found our desired value! That only took 3 comparsions 
+(remember, we are including 42 in the comparsion count - you could say it only took two comparsions which would be 40 and 45, but we also had to judge
+if the number 42 was equal to the number we were looking for so we say 3 comparsions). 
+
+
+This is compared to randomly going through numbers which, in the worst case we'd have to go through every element during our comparsions 
+(in case our desired element was at the last position or wasn't there at all) -- that's why they say: for N elements, and for linear searching the
+time complexity is O(N) - which basically means at the worst case we'd have to search through all N elements, so O(N). 
+
+Efficency in regard to a BST:
+
+
