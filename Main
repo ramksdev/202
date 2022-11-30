@@ -1596,10 +1596,101 @@ You can imagine that we do this for each node as we search for our element. For 
 (where we will check if it is greater than or less than the node/item and we will move left/right accordingly) - hence, we disregard a subtree and 
 avoid several comparsions by doing this. 
 
-So we HALF our input for every comparsion. There is a function in math that halves the input - it is a logorithim.
+There is a mathematical function that can encapsulate this reduction in comparsions: The Logorithim. 
 
-So we know what the time complexity is in the worst case for linear data stuctures (O(N) since in the worst case N elements are subject to comparsion) 
+So we know what the time complexity is in the worst case for linear data stuctures (O(N) since in the worst case N elements are subject to N comparsions) 
 but what about the worst case for a BST?
-Well, it becomes Log(base2)(n) 
-So we know that for 16 elements, Log2(16) = 4. So there are only four comparsions for 16 elements. So for N elements there would be Log(N) comparsions
-in the worst case. But actually - since we ALSO compare the root, it will take Log(N) + 1 comparsions. 
+Well, it is Log(n) 
+
+Example: There are only four comparsionsin finding a desired element among 16 elements. So for N elements there would be Log(N) comparsions
+in the worst case. But actually - since we ALSO compare the root, it will take Log(N) + 1 comparsions, so 17. 
+
+So, if there are 128 items, it would merely take Log(N) - Log(128) = 7 comparsions to find the desired element. However, since we must also 
+consider the root, it would be Log(128) + 1, so 8. 
+
+Different Tree Traversals:
+
+Note: To make a BST and judge what the Post/Pre/Inorder traversal will be go to this website! 
+https://yongdanielliang.github.io/animation/web/BST.html
+
+- Inorder Traversal 
+  Inorder traversal has a visitation order of left, node itself, then right: LNR. 
+  Following this pattern yeilds all elements of a BST in 'order' (ascending) 
+      40 
+    13  45   ===> Inorder: 8, 13, 26, 40, 42, 45, 98
+   8 26 42 98
+           
+- Postorder Traversal 
+  Postorder traversal has a visitation order of left, right, 'node itself': LRN. 
+  A good way to remember this is: 'post' often means 'after' - so the 'node itself' is considered 'after' L and R. 
+
+    40 
+   13 45   ===> Postorder: 8, 26, 13, 42, 98, 45, 40. 
+ 8 26 42 98
+           
+
+- Preorder Traversal 
+  This one is 'node itself' first, and then L and R. 
+    40 
+   13 45   ===> Preorder: 40, 13, 18, 26, 45, 42, 98 
+ 8 26 42 98
+           
+
+Building a BST (or Tree)
+- We will have a node that has two links and data. 
+           [ LINK1 | Data | LINK2 ] 
+             /                \ 
+[ LINK1 | Data | LINK2 ]  [ LINK1 | Data | LINK2 ] 
+
+
+
+==>> BinaryNode Class <<==
+
+package TreeProject;
+
+public class BinaryNode<T extends Comparable<T>>  {
+
+	private T data; 
+	private BinaryNode<T> left; 
+	private BinaryNode<T> right; 
+	
+	
+	public BinaryNode(T data) {
+		this.data = data; 
+		this.left = null; 
+		this.right = null; 
+	}
+	
+	public void setData(T data) {
+		this.data = data; 
+	}
+	
+	public T getData() {
+		return data; 
+	}
+	
+	public void setLeft(BinaryNode<T> otherNode) {
+		this.left = otherNode;  
+	}
+	
+	public void setRight(BinaryNode<T> otherNode) {
+		this.right = otherNode; 
+	}
+	
+	public BinaryNode<T> getLeft() {
+		return left; 
+	}
+	
+	
+	public BinaryNode<T> getRight() {
+		return right; 
+	}
+	
+}
+
+
+
+
+  
+
+======================================================================================================================================================
