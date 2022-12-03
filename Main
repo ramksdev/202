@@ -94,6 +94,21 @@ Since an Exception is a child of Throwable, and since our Exceptions inherit fro
 [Object] -> [Throwable] -> [Exception] -> Any Exception you might create (StackEmptyException/StackFullException)
 ========================================================================================================================================================
 
+========================================================================================================================================================
+
+         Equals Methods
+	/*
+	 * public boolean equals(Object otherObject) {
+	 * 	  boolean areTheyEqual = false; 
+	 *   if(otherObject == null && otherObject instanceof [MoreSpecificTypeOfObject]) {
+	 *   	check for equality of each instance variable. Nesting depth approach is the best move here. 
+	 *      (if it checks out, areTheyEqual = true);  
+	 *   }
+	 *   return areTheyEqual
+	 * }
+	 * 
+	 */
+========================================================================================================================================================
 
 
 
@@ -1382,6 +1397,36 @@ public class NodeBasedList<T> extends Object implements ListInterface<T> {
 	
 		return verdict; 
 	}
+	
+	
+It's like the remove on LC Remove Linked List Elements	
+--------------------------------------------------------
+	class Solution {
+    public ListNode removeElements(ListNode head, int val) {
+        
+        while(head != null && head.val == val) {
+            head = head.next; 
+        }
+        
+        ListNode n1 = head; 
+        ListNode prev = null; 
+        
+        while(n1 != null) {
+            if(n1.val == val) {
+                prev.next = n1.next; 
+            }
+            else {
+                prev = n1; 
+            }
+            n1 = n1.next; 
+        }
+        return head; 
+        
+    }
+}
+-----------------------------------------------------
+	
+
 	
 	/*
 	 * Can create personal 'Node' class within NodeBasedList - this is called an 'inner class' 
