@@ -1,6 +1,12 @@
 
 Abstract Data Types:
 
+- Primitive Data Types 
+- Class Data Types
+- ADT
+- Interface
+- Equals Methods
+
 Primitive Data Types:
 ========================================================================================================================================================
 These are built-in data types wihthin the language - class data types are data-types we create. 
