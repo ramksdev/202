@@ -1659,6 +1659,18 @@ in the worst case. But actually - since we ALSO compare the root, it will take L
 So, if there are 128 items, it would merely take Log(N) - Log(128) = 7 comparsions to find the desired element. However, since we must also 
 consider the root, it would be Log(128) + 1, so 8. 
 
+A more concrete example:
+
+                    o
+		 /\  /\
+                o  oo  o
+               /\
+	      o  o 
+	     /
+	    o
+There are 8 nodes. For 8 nodes, the time complexity (which is always in the worst case) is Log(8) + 1. Log(8) = 3, and then + 1 = 4.
+We can clearly see that if our target was the end node, in the worst case we'd have to make Log(N) + 1 comparsions. 
+	      
 Different Tree Traversals:
 
 Note: To make a BST and judge what the Post/Pre/Inorder traversal will be go to this website! 
@@ -1736,6 +1748,15 @@ public class BinaryNode<T extends Comparable<T>> extends Object { //Comparable i
     
 }
 ======================================================================================================================================================
+
+
+
+
+
+
+
+
+
 
 Binary Tree Data Structure 
 
