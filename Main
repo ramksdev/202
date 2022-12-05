@@ -1737,6 +1737,20 @@ public class BinaryNode<T extends Comparable<T>> extends Object { //Comparable i
 }
 ======================================================================================================================================================
 
+Binary Tree Data Structure 
+
+A tree whose elements have at most 2 children is called a binary tree. 
+Since each element in a binary tree can have only 2 children, we typically name them the left and right children. 
+
+
+A binary Search Tree is a node-based binary tree data structure that has the following properties:  
+
+The left subtree of a node contains only nodes with keys lesser than the node’s key.
+The right subtree of a node contains only nodes with keys greater than the node’s key.
+The left and right subtree each must also be a binary search tree.
+There must be no duplicate nodes.
+
+
 public class NodeBasedBinarySearchTree<T extends Comparable<T>> extends Object 
 implements BinarySearchTreeInterface<T> {
 //instance variables
@@ -1751,16 +1765,14 @@ public void add(T item) {
 root = recursiveAdd(root, item);
 }
 public BinaryNode<T> recursiveAdd(BinaryNode<T> currentNode, T item) {
-if (currentNode == null) {  //is the tree empty
-currentNode = new BinaryNode<T>(item);
+ if (currentNode == null) {  //is the tree empty
+ currentNode = new BinaryNode<T>(item);
 }
-else if(item.compareTo(currentNode.getData()) < 0) { //it means items 
-comes before data in currentNode (alphabetically)
-currentNode.setLeft(recursiveAdd(currentNode.getLeft(), item));
+else if(item.compareTo(currentNode.getData()) < 0) { //it means items comes before data in currentNode (alphabetically)
+ currentNode.setLeft(recursiveAdd(currentNode.getLeft(), item));
 }
-else if(item.compareTo(currentNode.getData()) > 0) { //it means items 
-come after data in currentNode (alphabetically)
-currentNode.setRight(recursiveAdd(currentNode.getRight(), item));
+else if(item.compareTo(currentNode.getData()) > 0) { //it means items come after data in currentNode (alphabetically)
+ currentNode.setRight(recursiveAdd(currentNode.getRight(), item));
 }
 return currentNode;
 }
