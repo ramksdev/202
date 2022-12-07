@@ -107,7 +107,7 @@ Since an Exception is a child of Throwable, and since our Exceptions inherit fro
 	 * public boolean equals(Object otherObject) {
 	 * 	  boolean areTheyEqual = false; 
 	 *   if(otherObject == null && otherObject instanceof [MoreSpecificTypeOfObject]) {
-	        SpecificObjectType otherSpecificObjectType = (SpecificObjectType)otherObject); 
+	        SpecificObjectType otherSpecificObjectType = (SpecificObjectType)otherObject; 
 	 *   	check for equality of each instance variable. Nesting depth approach is the best move here. 
 	 *      (if it checks out, areTheyEqual = true); f 
 	 *   }
