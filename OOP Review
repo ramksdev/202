@@ -1,0 +1,507 @@
+/*
+This program demonstrates how you may interact with multiple classes within a Demo.
+ */
+import java.util.Scanner;
+
+public class Demo2 {
+
+    public static void main(String[] args) {
+        Scanner keyboard = new Scanner(System.in);
+
+        Person currentPerson = null;
+        Employee currentEmployee = null;
+        Faculty currentFaculty = null;
+
+        int option;
+
+        do {
+            System.out.println("Press 1 to add a new Person");
+            System.out.println("Press 2 to add a new Employee");
+            System.out.println("Press 3 to add a new Faculty");
+            System.out.println("Press 4 to look at all three people");
+            System.out.println("Press 5 to end the program");
+            option = keyboard.nextInt();
+            keyboard.nextLine(); //flushes buffer
+
+            if(option == 1) {
+                //---------------------------------------------------------------------------------
+//                System.out.println("What is the name of the person?");
+//                String newName = keyboard.nextLine();
+//
+//                currentPerson = new Person(newName); //could also do currentPerson.setName(newName);
+                //-----------------------------------------------------------------------------------
+                currentPerson = new Person();
+                enterAllInformation(currentPerson);
+
+            }
+            else if(option == 2) {
+                //------------------------------------------------------------------------------------
+                //Notice we only ask for two variables.
+                System.out.println("What is the name of the new Employee?");
+                //registering name of new Employee
+                String newName = keyboard.nextLine();
+                //can also do currentEmployee.setName(newName) because Employee inherits setName
+                //Registering ID of new Employee
+                System.out.println("What is the ID of the new Employee");
+                int newID = keyboard.nextInt();
+                currentEmployee = new Employee(newName, newID);
+                //can also do currentEmployee.setID(newID) and currentEmployee.setName(name)
+                //------------------------------------------------------------------------------------
+
+            }
+            else if(option == 3) {
+                //----------------------------------------------------------------------------------------
+//                //notice how for faculty we provide all 3, because faculty has 3 variables of interest
+//                System.out.println("What is the name of the new Faculty?");
+//                String facultyName = keyboard.nextLine();
+//
+//                System.out.println("What is the ID of the new Faculty?");
+//                int facultyID = keyboard.nextInt();
+//                keyboard.nextLine();
+//                System.out.println("What is the Department of the new Faculty?");
+//                String facultyDepartment = keyboard.nextLine();
+//
+//
+//                //passing name, id, and dept to accepting constructor
+//                currentFaculty = new Faculty(facultyName, facultyID, facultyDepartment);
+                //--------------------------------------------------------------------------------------
+                currentFaculty = new Faculty();
+                enterAllInformation(currentFaculty); //enterAllInformation method allows us to do this instead
+
+
+            }
+            else if(option == 4) {
+                //print information about every object that has been created so far otherwise do not print information about objects
+                //that have not been created
+                System.out.println("Person's Name: " + currentPerson.getName());
+                System.out.println("Employee's Name: " + currentEmployee.getName());
+                System.out.println("Employee ID: " + currentEmployee.getEmployeeID()) ;
+                System.out.println("Faculty's Name: " + currentFaculty.getName());
+                System.out.println("Faculty Department: " + currentFaculty.getDepartment());
+                System.out.println("Faculty ID: " + currentFaculty.getEmployeeID());
+            }
+            else if(option == 5) {
+                System.out.println("Thank you for using the program");
+            }
+            else {
+                System.out.println("Invalid option, try again!");
+            }
+        }while(option != 5);
+
+    }
+
+    public static void enterAllInformation(Person p1) {
+        Scanner keyboard = new Scanner(System.in);
+        if(p1 != null) {
+            System.out.println("Enter the name: ");
+            String newName = keyboard.nextLine();
+            p1.setName(newName);
+            //instanceof checks for the type of object. If p2 refers to an instance of employee (then instanceof will return true)
+            //otherwise it will return false
+            //p2 reference will refer to the Employee object, but since Employee is polymorphic and is also of type 'Person'
+            //p2 will treat Employee as if it was referring to strictly a 'Person' instance.
+            //so we typecast
+            if(p1 instanceof Employee) {
+                Employee e2 = (Employee)p1;
+                System.out.println("Enter the employee id: " );
+                int newEmployeeID = keyboard.nextInt();
+                keyboard.nextLine();
+                e2.setEmployeeID(newEmployeeID);
+                if(p1 instanceof Faculty) {
+                    Faculty f2 = (Faculty)p1;
+                    System.out.println("Enter the department: ");
+                    String department = keyboard.nextLine();
+                    f2.setDepartment(department);
+                }
+            }
+        }
+    }
+}
+
+
+
+
+
+
+public class Employee extends Person {
+    //as you can see, 'extends Person' means 'Person' class is parent, and 'Employee' class is child.
+    //private variables of Person will not be available to employee (although that's what we want
+
+    //there is an instance variable that is unique to employee
+    private int employeeID;
+
+    public Employee() {
+        super(); //this will call constructor of parent class and then set default values that are within parent
+        employeeID = 0; //I am still providing default value explicitly for what instance variable is within employee
+    }
+
+    //for this overloaded const. - passing in name, so sent to super that calls constructor w. name, but employeeID still
+    //defaulted since a value wasn't explicitly passed in for that.
+    public Employee(String name) {
+        super(name);
+        employeeID = 0;
+    }
+
+    public Employee(String name, int employeeID) {
+        //will make a call to the constructor of the super class that accepts 'name' as a parameter.
+        //we would receive an error if the parent class didn't have an overloaded constructor with parameter name.
+        super(name);
+        /*
+        since they have passed in 'employeeID', it won't make sense to say employeeID = 0, that take the users
+        input for employeeID and force it to be 0. Passing it in the constructor of employee is trying to set
+        a new value for the employeeID field that is something other than the default value. As such, we should
+        pass the new employeeID to setName.
+         */
+        setEmployeeID(employeeID);
+    }
+
+    //this overloaded constructor just receives the employeeID, so let's call super() to get all the variables
+    //defined in person attached to Employee (obviously we won't do super(employeeID) since the employeeID field isn't
+    //available in 'Person' and as such there isn't an overloaded constructor which has 'employeeID' as a parameter
+    //in person.
+    public Employee(int employeeID) {
+        super();
+        setEmployeeID(employeeID);
+    }
+
+    /*
+        You might be wondering since Employee has the instance variable name through 'super' - and all other instance
+        variables defined in the 'Person' class, where are
+        setName and getName defined in this class? Well,
+        they are defined in 'Person' and are available to Employee (since you will inherit public methods/vars)
+        however, we don't need to define that within the Employee class
+    */
+
+    //we will still define methods that relate to instance variables unique to the 'Employee' class.
+    public void setEmployeeID(int employeeID) {
+        if(employeeID > 0) { //check within the setter if employeeID > 0..
+            this.employeeID = employeeID;
+        }
+    }
+
+    //getter for employeeID
+    public int getEmployeeID() {
+        return employeeID;
+    }
+
+    /*
+    this implementation of toString for the Employee will provide a String representation of the Object
+    So, We would have to retrieve the name - however, the name is not provided within the current class because it is a private
+    field defined within the parent class (in this case, Person).
+    we may either do "Name: " + getName or.. this.getName() or.. super.getName()
+    super.getName works because the private field 'name' was defined in Person and that is where 'Employee' received the field from
+    it basically says to call the getName method from the super class.
+    */
+
+    public String toString() {
+        return "Name: " + super.getName() + "Employee ID: " + this.employeeID;
+    }
+
+
+    //if the otherObject isn't null and the otherObject is an instance of type Employee, then cast the incoming employee to
+    //Employee type and see if their attributes are the same.
+    public boolean isEqual(Object otherObject) {
+        boolean areTheyEqual = false;
+        if(otherObject != null && otherObject instanceof Employee) {
+            Employee incomingEmployee = (Employee)(otherObject);
+            if(this.employeeID == incomingEmployee.employeeID && this.getName().equals(incomingEmployee.getName())) {
+                areTheyEqual = true;
+            }
+        }
+        return areTheyEqual;
+    }
+
+}
+
+public class Faculty extends Employee {
+
+    //this class will have public methods that are in Faculty and Employee - as well as variables through 'super()'
+
+    //instance variables that are unique to faculty, will be department to which faculty belongs.
+    private String department;
+
+
+    /*In this constructor, we bubble up all instance variables with Employee - and Employee sends a call to bubble
+     up all the instance variables in 'Person', and so all fields across Person and Faculty are inherited
+     as well as public methods that are defined within 'Person' and 'Employee' ..
+     Furthermore, 'Faculty' also has its own instance variables uniquely defined (these aren't available to 'Person'/Emp'
+     This is what a Faculty object may look like
+     f1 (reference) refers to a place in memory where the following instance variables are stored
+     - name
+     - employeeID
+     - department
+
+     The following methods are available to Faculty
+     - setName
+     - getName
+     - setEmployeeID
+     - getEmployeeID
+    */
+
+    /*
+    overloaded constructor, makes a call to super() to bubble up variables across 'Employee'
+    (employee will make a similar call)
+    It still provides a default field for 'department'.. note, we do not pass this to setDepartment since
+    it wasn't specified by the user what the department field must be (so we go default)
+     */
+    public Faculty() {
+        super();
+        department = "";
+    }
+
+    //in this overloaded constructor we pass in parameters for name, id, and department
+    //a call to super is made that accepts these variables (we can't have 2 super() calls)
+    //since the user has specified a department other than default, we pass that to setDepartment
+    public Faculty(String facName, int facID, String facDep) {
+        super(facName, facID);
+        this.department = facDep;
+    }
+
+    //if just given the name as a parameter, pass to overloaded const. of employee that accepts this field
+    //set default value for variables that are native to faculty -> dept.
+    public Faculty(String facName) {
+        super(facName);
+        department = "";
+    }
+    //if name of faculty and faculty ID is given, pass to overloaded const. of employee that accepts these fields.
+    //sill set default value for dept (not through setDept because user didn't define what dept should be
+    public Faculty(String facName, int facID) {
+        super(facName, facID);
+        department = "";
+    }
+    //if name and dept are given, make call to super() that accepts name, and then setDept(name)
+    // (or not, since no restrictions are on setting the department
+    public Faculty(String facName, String facDep) {
+        super(facName);
+        this.department = facDep;
+    }
+
+    //if id and dep are given, make call to overloaded const. in employee that accepts id
+    public Faculty(int facID, String facDep) {
+        super(facID);
+        this.department = facDep;
+    }
+
+    //non-static methods
+    public void setDepartment(String newDepartment) {
+        this.department = newDepartment;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public String toString() {
+        return "Name: " + super.getName() + " Faculty ID: " + this.getEmployeeID() + " Department: " + department;
+    }
+
+    public boolean equals(Object otherObject) {
+        boolean areTheyEqual = false;
+        if(otherObject != null && otherObject instanceof Faculty) {
+            Faculty incomingFaculty = (Faculty)otherObject;
+            if(this.getName().equals(incomingFaculty.getName()) && this.getDepartment().equals(incomingFaculty.getDepartment())) {
+                if(this.getEmployeeID() == incomingFaculty.getEmployeeID()) {
+                    areTheyEqual = true;
+                }
+            }
+        }
+        return areTheyEqual;
+    }
+
+    public static void main(String[] args) {
+        Faculty f1 = new Faculty("Jacob", 231, "CSC");
+        Faculty f2 = new Faculty("Jacob", 231, "CSC");
+        System.out.println(f1.equals(f2));
+    }
+
+}
+
+/*
+Contains an array of students where the first position is for the faculty member. Does not allow duplicate students
+
+
+ */
+
+
+import java.util.Scanner;
+
+public class Demo3 {
+
+    public static void main(String[] args) {
+
+        Scanner keyboard = new Scanner(System.in);
+        Person[] csc223Array = new Person[26];
+        int studentIndex = 1; //student index will start from 1 because position 0 is prof
+
+        int option;
+
+        do {
+            System.out.println("Press 1 to assign a new faculty to this class");
+            System.out.println("Press 2 to add a new student to the class");
+            System.out.println("Press 3 to see the current faculty and all the students in the class");
+            System.out.println("Press 4 to the program ");
+            option = keyboard.nextInt();
+            keyboard.nextLine(); //go to next line
+
+            if(option == 1) {
+                System.out.println("What is the name of the faculty?");
+                String name = keyboard.nextLine();
+
+                System.out.println("What is the ID of the faculty?");
+                int facultyID = keyboard.nextInt();
+                keyboard.nextLine();
+
+                System.out.println("what is the department of the faculty?");
+                String department = keyboard.nextLine();
+
+
+                Faculty faculty = new Faculty(name, facultyID, department);
+                csc223Array[0] = faculty;
+            }
+            if(option == 2) {
+                System.out.println("What is the name of the new student");
+                String name = keyboard.nextLine();
+                System.out.println("Enter the student ID");
+                int studentID = keyboard.nextInt();
+                keyboard.nextLine();
+                Student currentStudent = new Student(name, studentID);
+
+                boolean containsDuplicate = false;
+                for(int i = 1; i < studentIndex; i++) {
+                    if(csc223Array[i].equals(currentStudent)) {
+                        containsDuplicate = true; break;
+                    }
+                }
+
+                if(!containsDuplicate) {
+                    //if they array isn't already full (if where studentIndex is at isn't equal to the length (that would be OBE)
+                    //last iteration - studentIndex = 25, we add student, studentIndex becomes 26, we don't add anymore.
+                    if(studentIndex < csc223Array.length) {
+                        csc223Array[studentIndex] = currentStudent;
+                        studentIndex++;
+                    } else {
+                        System.out.println("Class is full");
+                    }
+                }
+                else {
+                    System.out.println("Cannot add same student twice");
+                }
+
+            }
+            if(option == 3) {
+                //studentIndex is the index to populate for student, but will also denote how many students in terms of actual count
+
+                for(int  i = 0; i < studentIndex; i++) {
+                    System.out.println(csc223Array[i].toString() + "\n");
+                }
+
+            }
+            if(option == 4) {
+                System.out.println("Thank you for using the program");
+            }
+        }while(option != 4);
+    }
+
+}
+
+public class Person {
+    //instance variables
+    private String name;
+
+    //constructor - super() would call this for child
+    public Person() {
+        this.name = "";
+    }
+
+    //overloaded constructor - super(name) would call this for a child
+    public Person(String name) {
+        this.name = name;
+    }
+
+    //non-static method(s) - getter/setter (mutator/accessor)
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    //this is an overridden method
+    //the Object class provides an implementation of this method, however we redefine it here, and Java prioritizes this one instead.
+    //evoked in main by Person p1 = new Person("Jane") -> then.. System.out.println(p1.toString())
+    public String toString() {
+        return "Name " + this.name;
+    }
+
+    //override the equal method from the Object class which means to replace the method that is inherited with the same heading/signature
+    //but a different implementation
+    //this method will either return T/F...
+    //since this method was designed in the Object class initially, the equals' method receives a type of Object
+    //we need same heading/signature to override implementation in object class
+    public boolean equals(Object otherObject) {
+        boolean areTheyEqual = false;
+        //checking if incoming object is not null, and since I'm trying to judge if two instantiations of 'Person' are equal,
+        //if that other object is not of type Person (or rather if instanceOf Person) returns false, then it's a dead giveaway that
+        //they aren't equal
+        if(otherObject != null && otherObject instanceof Person) {
+            Person otherPerson = (Person)otherObject;
+            if(this.name.equals(otherPerson.name)) {
+                areTheyEqual = true;
+            }
+        }
+        return areTheyEqual;
+    }
+
+}
+
+public class Student extends Person {
+
+    private int studentID;
+
+    public Student() {
+        super();
+        studentID = 0;
+    }
+
+    public Student(int studentID) {
+        super();
+        setStudentID(studentID);
+    }
+
+    public Student(String name) {
+        super(name);
+        this.studentID = 0;
+    }
+
+    public Student(String name, int studentID) {
+        super(name);
+        setStudentID(studentID);
+    }
+
+    public void setStudentID(int studentID) {
+        if(studentID > 0) {
+            this.studentID = studentID;
+        }
+    }
+
+    public int getStudentID() {
+        return studentID;
+    }
+
+    public String toString() {
+        return super.toString() + " Student ID: " + this.studentID;
+    }
+
+    public boolean equals(Object otherObject) {
+        boolean areTheyEqual = false;
+        if(otherObject != null && otherObject instanceof Student) {
+            if(this.getName().equals(((Student) otherObject).getName()) && this.studentID == ((Student) otherObject).studentID) {
+                areTheyEqual = true;
+            }
+        }
+        return  areTheyEqual;
+    }
+
+}
