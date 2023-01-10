@@ -1,0 +1,49 @@
+public class Student extends Person {
+
+    private int studentID;
+
+    public Student() {
+        super();
+        studentID = 0;
+    }
+
+    public Student(int studentID) {
+        super();
+        setStudentID(studentID);
+    }
+
+    public Student(String name) {
+        super(name);
+        this.studentID = 0;
+    }
+
+    public Student(String name, int studentID) {
+        super(name);
+        setStudentID(studentID);
+    }
+
+    public void setStudentID(int studentID) {
+        if(studentID > 0) {
+            this.studentID = studentID;
+        }
+    }
+
+    public int getStudentID() {
+        return studentID;
+    }
+
+    public String toString() {
+        return super.toString() + " Student ID: " + this.studentID;
+    }
+
+    public boolean equals(Object otherObject) {
+        boolean areTheyEqual = false;
+        if(otherObject != null && otherObject instanceof Student) {
+            if(this.getName().equals(((Student) otherObject).getName()) && this.studentID == ((Student) otherObject).studentID) {
+                areTheyEqual = true;
+            }
+        }
+        return  areTheyEqual;
+    }
+
+}

@@ -1,0 +1,51 @@
+public class Person {
+    //instance variables
+    private String name;
+
+    //constructor - super() would call this for child
+    public Person() {
+        this.name = "";
+    }
+
+    //overloaded constructor - super(name) would call this for a child
+    public Person(String name) {
+        this.name = name;
+    }
+
+    //non-static method(s) - getter/setter (mutator/accessor)
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    //this is an overridden method
+    //the Object class provides an implementation of this method, however we redefine it here, and Java prioritizes this one instead.
+    //evoked in main by Person p1 = new Person("Jane") -> then.. System.out.println(p1.toString())
+    public String toString() {
+        return "Name " + this.name;
+    }
+
+    //override the equal method from the Object class which means to replace the method that is inherited with the same heading/signature
+    //but a different implementation
+    //this method will either return T/F...
+    //since this method was designed in the Object class initially, the equals' method receives a type of Object
+    //we need same heading/signature to override implementation in object class
+    public boolean equals(Object otherObject) {
+        boolean areTheyEqual = false;
+        //checking if incoming object is not null, and since I'm trying to judge if two instantiations of 'Person' are equal,
+        //if that other object is not of type Person (or rather if instanceOf Person) returns false, then it's a dead giveaway that
+        //they aren't equal
+        if(otherObject != null && otherObject instanceof Person) {
+            Person otherPerson = (Person)otherObject;
+            if(this.name.equals(otherPerson.name)) {
+                areTheyEqual = true;
+            }
+        }
+        return areTheyEqual;
+    }
+
+}

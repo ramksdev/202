@@ -1,0 +1,87 @@
+/*
+Contains an array of students where the first position is for the faculty member. Does not allow duplicate students
+
+
+ */
+
+
+import java.util.Scanner;
+
+public class Demo3 {
+
+    public static void main(String[] args) {
+
+        Scanner keyboard = new Scanner(System.in);
+        Person[] csc223Array = new Person[26];
+        int studentIndex = 1; //student index will start from 1 because position 0 is prof
+
+        int option;
+
+        do {
+            System.out.println("Press 1 to assign a new faculty to this class");
+            System.out.println("Press 2 to add a new student to the class");
+            System.out.println("Press 3 to see the current faculty and all the students in the class");
+            System.out.println("Press 4 to the program ");
+            option = keyboard.nextInt();
+            keyboard.nextLine(); //go to next line
+
+            if(option == 1) {
+                System.out.println("What is the name of the faculty?");
+                String name = keyboard.nextLine();
+
+                System.out.println("What is the ID of the faculty?");
+                int facultyID = keyboard.nextInt();
+                keyboard.nextLine();
+
+                System.out.println("what is the department of the faculty?");
+                String department = keyboard.nextLine();
+
+
+                Faculty faculty = new Faculty(name, facultyID, department);
+                csc223Array[0] = faculty;
+            }
+            if(option == 2) {
+                System.out.println("What is the name of the new student");
+                String name = keyboard.nextLine();
+                System.out.println("Enter the student ID");
+                int studentID = keyboard.nextInt();
+                keyboard.nextLine();
+                Student currentStudent = new Student(name, studentID);
+
+                boolean containsDuplicate = false;
+                for(int i = 1; i < studentIndex; i++) {
+                    if(csc223Array[i].equals(currentStudent)) {
+                        containsDuplicate = true; break;
+                    }
+                }
+
+                if(!containsDuplicate) {
+                    //if they array isn't already full (if where studentIndex is at isn't equal to the length (that would be OBE)
+                    //last iteration - studentIndex = 25, we add student, studentIndex becomes 26, we don't add anymore.
+                    if(studentIndex < csc223Array.length) {
+                        csc223Array[studentIndex] = currentStudent;
+                        studentIndex++;
+                    } else {
+                        System.out.println("Class is full");
+                    }
+                }
+                else {
+                    System.out.println("Cannot add same student twice");
+                }
+
+            }
+            if(option == 3) {
+                //studentIndex is the index to populate for student, but will also denote how many students in terms of actual count
+
+                for(int  i = 0; i < studentIndex; i++) {
+                    System.out.println(csc223Array[i].toString() + "\n");
+                }
+
+            }
+            if(option == 4) {
+                System.out.println("Thank you for using the program");
+            }
+        }while(option != 4);
+    }
+
+}

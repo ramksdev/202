@@ -1,0 +1,102 @@
+public class Faculty extends Employee {
+
+    //this class will have public methods that are in Faculty and Employee - as well as variables through 'super()'
+
+    //instance variables that are unique to faculty, will be department to which faculty belongs.
+    private String department;
+
+
+    /*In this constructor, we bubble up all instance variables with Employee - and Employee sends a call to bubble
+     up all the instance variables in 'Person', and so all fields across Person and Faculty are inherited
+     as well as public methods that are defined within 'Person' and 'Employee' ..
+     Furthermore, 'Faculty' also has its own instance variables uniquely defined (these aren't available to 'Person'/Emp'
+     This is what a Faculty object may look like
+     f1 (reference) refers to a place in memory where the following instance variables are stored
+     - name
+     - employeeID
+     - department
+
+     The following methods are available to Faculty
+     - setName
+     - getName
+     - setEmployeeID
+     - getEmployeeID
+    */
+
+    /*
+    overloaded constructor, makes a call to super() to bubble up variables across 'Employee'
+    (employee will make a similar call)
+    It still provides a default field for 'department'.. note, we do not pass this to setDepartment since
+    it wasn't specified by the user what the department field must be (so we go default)
+     */
+    public Faculty() {
+        super();
+        department = "";
+    }
+
+    //in this overloaded constructor we pass in parameters for name, id, and department
+    //a call to super is made that accepts these variables (we can't have 2 super() calls)
+    //since the user has specified a department other than default, we pass that to setDepartment
+    public Faculty(String facName, int facID, String facDep) {
+        super(facName, facID);
+        this.department = facDep;
+    }
+
+    //if just given the name as a parameter, pass to overloaded const. of employee that accepts this field
+    //set default value for variables that are native to faculty -> dept.
+    public Faculty(String facName) {
+        super(facName);
+        department = "";
+    }
+    //if name of faculty and faculty ID is given, pass to overloaded const. of employee that accepts these fields.
+    //sill set default value for dept (not through setDept because user didn't define what dept should be
+    public Faculty(String facName, int facID) {
+        super(facName, facID);
+        department = "";
+    }
+    //if name and dept are given, make call to super() that accepts name, and then setDept(name)
+    // (or not, since no restrictions are on setting the department
+    public Faculty(String facName, String facDep) {
+        super(facName);
+        this.department = facDep;
+    }
+
+    //if id and dep are given, make call to overloaded const. in employee that accepts id
+    public Faculty(int facID, String facDep) {
+        super(facID);
+        this.department = facDep;
+    }
+
+    //non-static methods
+    public void setDepartment(String newDepartment) {
+        this.department = newDepartment;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public String toString() {
+        return "Name: " + super.getName() + " Faculty ID: " + this.getEmployeeID() + " Department: " + department;
+    }
+
+    public boolean equals(Object otherObject) {
+        boolean areTheyEqual = false;
+        if(otherObject != null && otherObject instanceof Faculty) {
+            Faculty incomingFaculty = (Faculty)otherObject;
+            if(this.getName().equals(incomingFaculty.getName()) && this.getDepartment().equals(incomingFaculty.getDepartment())) {
+                if(this.getEmployeeID() == incomingFaculty.getEmployeeID()) {
+                    areTheyEqual = true;
+                }
+            }
+        }
+        return areTheyEqual;
+    }
+
+    public static void main(String[] args) {
+        Faculty f1 = new Faculty("Jacob", 231, "CSC");
+        Faculty f2 = new Faculty("Jacob", 231, "CSC");
+        System.out.println(f1.equals(f2));
+    }
+
+}

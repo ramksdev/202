@@ -1,0 +1,124 @@
+/*
+This program demonstrates how you may interact with multiple classes within a Demo.
+ */
+import java.util.Scanner;
+
+public class Demo2 {
+
+    public static void main(String[] args) {
+        Scanner keyboard = new Scanner(System.in);
+
+        Person currentPerson = null;
+        Employee currentEmployee = null;
+        Faculty currentFaculty = null;
+
+        int option;
+
+        do {
+            System.out.println("Press 1 to add a new Person");
+            System.out.println("Press 2 to add a new Employee");
+            System.out.println("Press 3 to add a new Faculty");
+            System.out.println("Press 4 to look at all three people");
+            System.out.println("Press 5 to end the program");
+            option = keyboard.nextInt();
+            keyboard.nextLine(); //flushes buffer
+
+            if(option == 1) {
+                //---------------------------------------------------------------------------------
+//                System.out.println("What is the name of the person?");
+//                String newName = keyboard.nextLine();
+//
+//                currentPerson = new Person(newName); //could also do currentPerson.setName(newName);
+                //-----------------------------------------------------------------------------------
+                currentPerson = new Person();
+                enterAllInformation(currentPerson);
+
+            }
+            else if(option == 2) {
+                //------------------------------------------------------------------------------------
+                //Notice we only ask for two variables.
+                System.out.println("What is the name of the new Employee?");
+                //registering name of new Employee
+                String newName = keyboard.nextLine();
+                //can also do currentEmployee.setName(newName) because Employee inherits setName
+                //Registering ID of new Employee
+                System.out.println("What is the ID of the new Employee");
+                int newID = keyboard.nextInt();
+                currentEmployee = new Employee(newName, newID);
+                //can also do currentEmployee.setID(newID) and currentEmployee.setName(name)
+                //------------------------------------------------------------------------------------
+
+            }
+            else if(option == 3) {
+                //----------------------------------------------------------------------------------------
+//                //notice how for faculty we provide all 3, because faculty has 3 variables of interest
+//                System.out.println("What is the name of the new Faculty?");
+//                String facultyName = keyboard.nextLine();
+//
+//                System.out.println("What is the ID of the new Faculty?");
+//                int facultyID = keyboard.nextInt();
+//                keyboard.nextLine();
+//                System.out.println("What is the Department of the new Faculty?");
+//                String facultyDepartment = keyboard.nextLine();
+//
+//
+//                //passing name, id, and dept to accepting constructor
+//                currentFaculty = new Faculty(facultyName, facultyID, facultyDepartment);
+                //--------------------------------------------------------------------------------------
+                currentFaculty = new Faculty();
+                enterAllInformation(currentFaculty); //enterAllInformation method allows us to do this instead
+
+
+            }
+            else if(option == 4) {
+                //print information about every object that has been created so far otherwise do not print information about objects
+                //that have not been created
+                System.out.println("Person's Name: " + currentPerson.getName());
+                System.out.println("Employee's Name: " + currentEmployee.getName());
+                System.out.println("Employee ID: " + currentEmployee.getEmployeeID()) ;
+                System.out.println("Faculty's Name: " + currentFaculty.getName());
+                System.out.println("Faculty Department: " + currentFaculty.getDepartment());
+                System.out.println("Faculty ID: " + currentFaculty.getEmployeeID());
+            }
+            else if(option == 5) {
+                System.out.println("Thank you for using the program");
+            }
+            else {
+                System.out.println("Invalid option, try again!");
+            }
+        }while(option != 5);
+
+    }
+
+    public static void enterAllInformation(Person p1) {
+        Scanner keyboard = new Scanner(System.in);
+        if(p1 != null) {
+            System.out.println("Enter the name: ");
+            String newName = keyboard.nextLine();
+            p1.setName(newName);
+            //instanceof checks for the type of object. If p2 refers to an instance of employee (then instanceof will return true)
+            //otherwise it will return false
+            //p2 reference will refer to the Employee object, but since Employee is polymorphic and is also of type 'Person'
+            //p2 will treat Employee as if it was referring to strictly a 'Person' instance.
+            //so we typecast
+            if(p1 instanceof Employee) {
+                Employee e2 = (Employee)p1;
+                System.out.println("Enter the employee id: " );
+                int newEmployeeID = keyboard.nextInt();
+                keyboard.nextLine();
+                e2.setEmployeeID(newEmployeeID);
+                if(p1 instanceof Faculty) {
+                    Faculty f2 = (Faculty)p1;
+                    System.out.println("Enter the department: ");
+                    String department = keyboard.nextLine();
+                    f2.setDepartment(department);
+                }
+            }
+        }
+    }
+}
+
+
+
+
+
